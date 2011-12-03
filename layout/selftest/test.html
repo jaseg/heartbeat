@@ -1,0 +1,62 @@
+<html>
+<head>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.js"></script>
+  <script type="text/javascript" src="jquery.sha256.js"></script>
+  <script type="text/javascript" src="async.js"></script>
+  <title>Selftest</title>
+</head>
+<body>
+  <script>
+    function register(){ 
+      var session, salt;
+      async.series([
+      function(callback){
+        console.log("getting session");
+        $.getJSON('/session', function(data){
+          session = data.id;
+          salt = data.salt;
+          console.log("session id: "+session+" global salt: "+salt);
+          callback(null);
+        });
+      },
+      function(callback){
+        console.log("register");
+        $.post('/register', {id: session, username: "jaseg", pwhash: $.sha256("foo"+salt)}, function(data){
+          console.log(data);
+          callback(null);
+        });
+      },
+      function(callback){
+        console.log("login");
+        $.post('/login', {id: session, username: "jaseg", pwhash: $.sha256("foo"+salt)}, function(data){
+          console.log(data);
+          callback(null);
+        });
+      },
+      function(callback){
+        console.log("login");
+        $.post('/login', {id: session, username: "jaseg", pwhash: $.sha256("bar"+salt)}, function(data){
+          console.log(data);
+          callback(null);
+        });
+      },
+      function(callback){
+        console.log("notification");
+        $.post('/notification', {id: session}, function(data){
+          console.log(data);
+          callback(null);
+        });
+      },
+      function(callback){
+        console.log("notification");
+        $.post('/notification', {id: "foo"}, function(data){
+          console.log(data);
+          callback(null);
+        });
+      },
+      ]);
+    }
+    register();
+  </script>
+</body>
+</html>
