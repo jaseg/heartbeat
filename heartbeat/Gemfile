@@ -2,6 +2,9 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.1.3'
 gem 'mongo_mapper'
+gem 'twitter-bootstrap-rails'
+gem 'bson_ext'
+gem "nifty-generators", :group => :development
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
@@ -34,3 +37,4 @@ group :test do
   # Pretty printed test output
   gem 'turn', '~> 0.8.3', :require => false
 end
+gem "mocha", :group => :test
