@@ -15,7 +15,7 @@ public class RestConnectorTest extends AndroidTestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		connectorToTest = new RestConnector();
+		connectorToTest = new RestConnector("10.1.20.45");
 	}
 	
 	public void testConnectorShouldConnect(){
