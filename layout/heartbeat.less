@@ -1,0 +1,39 @@
+/*!
+ * Heartbeat v0.1
+ */
+ // Core variables and mixins
+@import "lib/variables.less"; // Modify this for custom colors, font-sizes, etc
+@import "lib/mixins.less";
+  
+h2 span {
+  border-radius:10px;
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  margin-right: 5px;
+  &.green { 
+    background-color: green; 
+  }
+  &.yellow { 
+    background-color: yellow; 
+  }
+  &.red { 
+    background-color: red; 
+  }
+}
+
+.update {
+  border: 1px solid @grayLighter;
+  padding: 10px;
+  .border-radius(5px);
+}
+
+#map_canvas {
+  margin: 0;
+  padding: 0;
+  height: 300px;
+}
+
+.page-header {
+  margin-top: 25px;
+}
