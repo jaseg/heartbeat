@@ -23,14 +23,27 @@ public class StartScreen extends Activity {
 	
     private static final String TAG = "StartScreen";
 
+    private SharedPreferences preferences;
+    
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        
+        checkServerIPAndSetIfNot();
+        
         setContentView(R.layout.main);
     }
     
-    @Override
+    private void checkServerIPAndSetIfNot() {
+		if(getServerIP().equals("")){
+			startSettingsActivity();
+		}
+	}
+
+	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
     	MenuInflater menuInflater = getMenuInflater();
     	menuInflater.inflate(R.menu.application_menu, menu);
@@ -83,7 +96,6 @@ public class StartScreen extends Activity {
 	}
 
 	private String getServerIP() {
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		String serverIP = preferences.getString(getString(R.string.server_ip_key), "");
 		Log.d(TAG, "ServerIP = " + serverIP);
 		return serverIP;
