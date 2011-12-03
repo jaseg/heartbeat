@@ -1,15 +1,18 @@
 package org.rhok.prototype.notification;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.NameValuePair;
 
 public abstract class Notification {
 
-	protected HashMap<String, String> content;
+	protected List<NameValuePair> content;
 	
-	public abstract HashMap<String, String> getContent();
+	public abstract List<NameValuePair> getContent();
 	
 	public Notification(){
-		content = new HashMap<String, String>();
+		content = new ArrayList<NameValuePair>();
 	}
 	
 }

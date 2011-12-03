@@ -4,6 +4,11 @@
     <string name="hello">Hello World, StartScreen!</string>
     <string name="app_name">RHoKPrototype</string>
     
+    <string name="button_send_notification">Send Heartbeat</string>
+    
+    <string name="send_success">Heartbeat delivered</string>
+    <string name="send_failure">Heartbeat not delivered</string>
+    
     <!-- Setting Strings -->
     <string name="setting_menu_title">Settings</string>
     <string name="server_settings">Server Settings</string>
