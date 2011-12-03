@@ -2,18 +2,20 @@
 
 require 'sinatra'
 require 'notification'
+require 'db_wrapper'
 
 post '/notification' do
 	nf = Notification.new
 	nf.content = params[:content]
-	nf.coordinates = params[:coordinates]
+	nf.coordinates = Coordinates.new
+	nf.coordinates.longitude = params[:longitude].to_f
+	nf.coordinates.latitude = params[:latitude].to_f
 	if params[:source]
 		nf.source = params[:source]
 	else
 		nf.source = request.ip
 	end
 	nf.timestamp = Time.now.to_i
-	DBWrapper.create_heartbeat(nf)
-	nf.timestamp.to_s
+	DbWrapper.create_heartbeat(nf)
 end
 
