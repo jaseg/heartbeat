@@ -7,6 +7,7 @@ class Notification
   key :content, String
   key :coordinates, Coordinates
   key :timestamp, Time
+  key :ip, String
   key :source, String
 end
 
