@@ -1,3 +1,0 @@
-[submodule "sinatra/autentication"]
-	path = sinatra/authentication
-	url = https://github.com/maxjustus/sinatra-authentication.git
