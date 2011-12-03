@@ -8,6 +8,7 @@ General objective
 "Heartbeat" is a proof of concept. The goal is to develop a system that provides people who are in danger of oppression due to political views with the possibility to be "tracked" in daily life. This tracking makes sure that the person is seemingly still active in his own private environment (and not locked away). As soon the tracking cannot spot the person anymore (no heartbeats have been received) the system starts informing family members, defined contacts, Amnesty International, etc. immediately to report a missing person.
 
 Tracking can be accomplished by:
+
 * using a mobile app (sending out automatic background heartbeats or manually sending out an alarm by the user)
 * manually using a web interface
 * monitoring the person's Twitter Tweets
