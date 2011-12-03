@@ -2,6 +2,11 @@
 require 'coordinates'
 
 class Notification
-	attr_accessor :content, :coordinates, :timestamp, :source
+  include  MongoMapper::EmbeddedDocument
+
+  key :content, String
+  key :coordinates, Coordinates
+  key :timestamp, Time
+  key :source, String
 end
 

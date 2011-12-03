@@ -1,10 +1,12 @@
 #!/usr/bin/ruby -rubygems
 
 require 'sinatra'
-require 'notification'
-require 'db_wrapper'
+require 'heartbeat'
 
 set :public_folder, File.dirname(__FILE__) + '/../layout'
+
+MongoMapper.connection = Mongo::Connection.new
+MongoMapper.database = "heartbeat"
 
 get '/' do
   redirect to '/index.html'
@@ -21,7 +23,8 @@ post '/notification' do
 	else
 		nf.source = request.ip
 	end
-	nf.timestamp = Time.now.to_i
-	DbWrapper.create_heartbeat(nf)
+	nf.timestamp = Time.now
+  hb = Heartbeat.new(nf)
+  hb.save
 end
 
