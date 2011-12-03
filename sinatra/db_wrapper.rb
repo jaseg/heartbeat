@@ -22,7 +22,7 @@ class DbWrapper
         "source" => heartbeat.notification.source
       }
     }
-    puts @notifications.insert(doc).to_s
+    @notifications.insert(doc).to_s
   end
 
   def self.create_heartbeat(notification)
