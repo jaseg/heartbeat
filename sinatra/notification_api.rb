@@ -24,11 +24,8 @@ post '/notification' do
 	nf.coordinates = Coordinates.new
 	nf.coordinates.longitude = params[:longitude].to_f
 	nf.coordinates.latitude = params[:latitude].to_f
-	if params[:source]
-		nf.source = params[:source]
-	else
-		nf.source = request.ip
-	end
+	nf.source = params[:source] ? params[:source] : "extern"
+  nf.ip = request.ip
 	nf.timestamp = Time.now
   hb = Heartbeat.new(nf, user)
   hb.save
