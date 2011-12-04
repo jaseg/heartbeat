@@ -5,9 +5,9 @@
   <tr>
     <th>Name</th>
   </tr>
-  <% for heartbeat in @heartbeats %>
-    <tr>
-      <td><%= heartbeat %></td>
-    </tr>
-  <% end %>
+  <tr>
+    <td><%= @heartbeat.timestamp %></td>
+    <td><%= @heartbeat.source %></td>
+    <td><%= @heartbeat.status %></td>
+  </tr>
 </table>
