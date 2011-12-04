@@ -1,0 +1,118 @@
+<html>
+<head>
+  <script type="text/javascript" src="jquery-1.7.js"></script>
+  <script type="text/javascript" src="jquery.sha256.js"></script>
+  <script type="text/javascript" src="jquery.cookie.js"></script>
+  <script type="text/javascript" src="async.js"></script>
+  <title>Selftest</title>
+</head>
+<body>
+  <script>
+    function register(){ 
+      var session, salt;
+      async.series([
+      function(callback){
+        console.log("getting session");
+        //session = $.cookie("session");
+        if(session){
+          callback();
+        }else{
+          $.getJSON('/session', function(data){
+            session = data.id;
+            salt = data.salt;
+            $.cookie("session", session);
+            console.log("session id: "+session+" global salt: "+salt);
+            callback();
+          });
+        }
+      },
+      function(callback){
+        console.log("register");
+        $.post('/register', {id: session, username: "jaseg", pwhash: $.sha256("foo"+salt)}, function(data){
+          console.log(data);
+          callback();
+        });
+      },
+      function(callback){
+        console.log("register");
+        $.post('/register', {id: session, username: "foo", pwhash: $.sha256("42"+salt)}, function(data){
+          console.log(data);
+          callback();
+        });
+      },
+      function(callback){
+        console.log("register");
+        $.post('/register', {id: session, username: "bar", pwhash: $.sha256("23"+salt)}, function(data){
+          console.log(data);
+          callback();
+        });
+      },
+      function(callback){
+        console.log("login");
+        $.post('/login', {id: session, username: "jaseg", pwhash: $.sha256("foo"+salt)}, function(data){
+          console.log(data);
+          callback();
+        });
+      },
+      function(callback){
+        console.log("login");
+        $.post('/login', {id: session, username: "jaseg", pwhash: $.sha256("bar"+salt)}, function(data){
+          console.log(data);
+          callback();
+        });
+      },
+      function(callback){
+        console.log("notification");
+        $.post('/notification', {id: session}, function(data){
+          console.log(data);
+          callback();
+        });
+      },
+      function(callback){
+        console.log("notification");
+        $.post('/notification', {id: "foo"}, function(data){
+          console.log(data);
+          callback();
+        });
+      },
+      function(callback){
+        console.log("adding contact");
+        $.post('/contacts', {id: session, contact_name: "foo"}, function(data){
+          console.log(data);
+          callback();
+        });
+      },
+      function(callback){
+        console.log("adding contact");
+        $.post('/contacts', {id: session, contact_name: "bar"}, function(data){
+          console.log(data);
+          callback();
+        });
+      },
+      function(callback){
+        console.log("list contacts");
+        $.getJSON('/contacts', {id: session}, function(data){
+          console.log(data);
+          callback();
+        });
+      },
+      function(callback){
+        console.log("list sources");
+        $.getJSON('/sources', {id: session}, function(data){
+          console.log(data);
+          callback();
+        });
+      },
+      function(callback){
+        console.log("list notifications");
+        $.getJSON('/notifications/by-source/extern', {id: session}, function(data){
+          console.log(data);
+          callback();
+        });
+      },
+      ]);
+    }
+    register();
+  </script>
+</body>
+</html>
