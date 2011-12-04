@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, StartScreen!</string>
+    <string name="app_name">RHoKPrototype</string>
+    
+    <string name="button_send_notification">Send Heartbeat</string>
+    
+    <string name="send_success">Heartbeat delivered</string>
+    <string name="send_failure">Heartbeat not delivered</string>
+    
+    <!-- Setting Strings -->
+    <string name="set_server_ip_please">Please set the Server IP/URL from the Heartbeat server</string>
+    <string name="setting_menu_title">Settings</string>
+    <string name="server_settings">Server Settings</string>
+    <string name="server_ip_setting">Server IP/URL</string>
+	<string name="server_ip_key">serverIP</string>
+	<string name="server_ip_summary">Please enter the server IP/URL where to send your heartbeats.</string>
+	<string name="server_ip_dialog_title">Enter Server IP or URL</string>
+	
+</resources>
