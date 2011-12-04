@@ -4,3 +4,4 @@
 gen/
 bin/
 .DS_Store
+*.pyc
