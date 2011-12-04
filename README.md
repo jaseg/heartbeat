@@ -1,7 +1,7 @@
 Heartbeat Monitor
 =================
 
-This application is part of the "Heartbeat" Solution started on the RHok (Random Hacks of Kindness) Berlin on Dec. 3rd 2011.
+This application is part of the "Heartbeat" Solution started on the [RHok](http://www.rhok.org/) (Random Hacks of Kindness) Berlin on Dec. 3rd 2011.
 
 General objective
 ------------------
