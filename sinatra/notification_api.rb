@@ -1,7 +1,9 @@
-#!/usr/bin/ruby -rubygems
+#!/usr/bin/env ruby
 
+require 'rubygems'
 require 'sinatra'
-require 'heartbeat'
+require File.dirname(__FILE__) + '/heartbeat.rb'
+
 MongoMapper.connection = Mongo::Connection.new
 MongoMapper.database = "heartbeat"
 

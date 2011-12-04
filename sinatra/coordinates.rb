@@ -1,4 +1,3 @@
-
 require 'mongo_mapper'
 
 class Coordinates

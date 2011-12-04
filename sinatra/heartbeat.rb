@@ -1,5 +1,4 @@
-
-require 'notification'
+require File.dirname(__FILE__) + '/notification.rb'
 
 class Heartbeat
   include MongoMapper::Document
