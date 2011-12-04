@@ -84,7 +84,7 @@ public class StartScreen extends Activity implements LocationInterface {
 	}
 
 	public void userLocationUpdate(Location userLocation) {
-		RestConnector restConnector = new RestConnector(getServerIP());
+		RestConnector restConnector = RestConnector.getInstance(getServerIP());
 	    NormalNotification notification = new NormalNotification("Test Message", userLocation.getLongitude(), userLocation.getLatitude());
 	    
 	    locationService.stopUpdatingUserLocation();
