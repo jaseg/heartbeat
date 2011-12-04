@@ -16,9 +16,9 @@ end
 
 post '/notification' do
   id = params[:id]
-  return '{\"error\":"invalid session"}' unless id and sessions[id]
+  return '{"error":"invalid session"}' unless id and sessions[id]
   user = sessions[id].user
-  return '{\"error\": "not authenticated"}' unless user
+  return '{"error": "not authenticated"}' unless user
 	nf = Notification.new
 	nf.content = params[:content]
 	nf.coordinates = Coordinates.new
@@ -32,6 +32,13 @@ post '/notification' do
   "{\"timestamp\":\"#{nf.timestamp}\"}"
 end
 
+get '/notifications/by-source/:source' do
+  id = params[:id]
+  return '{"error":"invalid session"}' unless id and sessions[id]
+  #page = params[:page] ? params[:page] : 1
+  return Heartbeat.all(:conditions => {"user_id" => sessions[id].user.id, "notification.source" => params[:source]}).to_json()
+end
+
 get '/session' do
   session = Session.new
   id = Session.generateID
@@ -39,29 +46,40 @@ get '/session' do
   "{\"id\":\"#{id}\",\"salt\":\"#{GLOBAL_SALT}\"}"
 end
 
+post '/update_user' do
+  id = params[:id]
+  return '{"error":"invalid session"}' unless id and sessions[id]
+  user = sessions[id].user
+  return '{"error": "not authenticated"}' unless user
+  user.positive_keyword = params[:positive_keyword] if params[:positive_keyword]
+  user.negative_keyword = params[:negative_keyword] if params[:negative_keyword]
+  user.save
+end
+
 post '/login' do
   id = params[:id]
   username = params[:username]
   pwhash = params[:pwhash]
-  return '{\"error\":"invalid session"}' unless id and sessions[id]
+  return '{"error":"invalid session"}' unless id and sessions[id]
   if username and pwhash 
     user = User.find_by_name(username)
     return '{"error":"already authenticated"}' if sessions[id].user
     if user and user.authenticate(pwhash, id)
       sessions[id].user = user
-      return '{\"success\":\"true\"}'
+      return '{"success":"true"}'
     else
       sessions.delete id
-      return '{\"error\":"wrong something"}'
+      return '{"error":"wrong something"}'
     end
   else
-    return '{\"error\":"request invalid"}'
+    return '{"error":"request invalid"}'
   end
 end
 
 post '/logout' do
   id = params[:id]
   sessions.delete id if id
+  return '{"success":"true"}'
 end
 
 post '/register' do
@@ -69,7 +87,7 @@ post '/register' do
   username = params[:username]
   pwhash = params[:pwhash]
   id = params[:id]
-  return '{\"error\":"invalid session"}' unless id and sessions[id]
+  return '{"error":"invalid session"}' unless id and sessions[id]
   if username and pwhash
     user = User.new
     user.username = username
@@ -77,12 +95,12 @@ post '/register' do
     unless User.find_by_name(username)
       user.save
       sessions[id].user = user
-      return '{\"success\":\"true\"}'
+      return '{"success":"true"}'
     else
-      return '{\"error\":"username taken"}'
+      return '{"error":"username taken"}'
     end
   else
-    return '{\"error\":"request invalid"}'
+    return '{"error":"request invalid"}'
   end
 end
 

@@ -7,14 +7,24 @@ class Heartbeat
   key :state, String
   belongs_to :user
 
-	def compute_state
+	def compute_state(user)
     #FIXME add magyck here!
-		@state = "neutral"
+    if @notification.content? and @notification.content.include?
+      if @notification.content.include? user.negative_keyword
+        @state = "negative" 
+      elsif @notification.content.include? user.positive_keyword
+        @state = "positive"
+      else
+        @state = "neutral" 
+      end
+    else
+      @state = "neutral" 
+    end
 	end
 
   def initialize(nf, user)
     @notification = nf
     @user_id=user.id
-    compute_state
+    compute_state(user)
   end
 end

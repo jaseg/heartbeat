@@ -13,7 +13,7 @@
       async.series([
       function(callback){
         console.log("getting session");
-        session = $.cookie("session");
+        //session = $.cookie("session");
         if(session){
           callback();
         }else{
@@ -30,35 +30,42 @@
         console.log("register");
         $.post('/register', {id: session, username: "jaseg", pwhash: $.sha256("foo"+salt)}, function(data){
           console.log(data);
-          callback(null);
+          callback();
         });
       },
       function(callback){
         console.log("login");
         $.post('/login', {id: session, username: "jaseg", pwhash: $.sha256("foo"+salt)}, function(data){
           console.log(data);
-          callback(null);
+          callback();
         });
       },
       function(callback){
         console.log("login");
         $.post('/login', {id: session, username: "jaseg", pwhash: $.sha256("bar"+salt)}, function(data){
           console.log(data);
-          callback(null);
+          callback();
         });
       },
       function(callback){
         console.log("notification");
         $.post('/notification', {id: session}, function(data){
           console.log(data);
-          callback(null);
+          callback();
         });
       },
       function(callback){
         console.log("notification");
         $.post('/notification', {id: "foo"}, function(data){
           console.log(data);
-          callback(null);
+          callback();
+        });
+      },
+      function(callback){
+        console.log("list");
+        $.getJSON('/notifications/by-source/extern', {id: session}, function(data){
+          console.log(data);
+          callback();
         });
       },
       ]);
