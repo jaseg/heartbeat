@@ -28,17 +28,22 @@ public class RestConnector extends Connector {
 	
 	private URI serverURL;
 	
+	private static RestConnector instance;
+	
 	private HttpClient httpClient = null;
 
 	private HttpPost httpPost = null;
 	
-	public RestConnector(String serverIP) {
+	private RestConnector(String serverIP) {
 		super(serverIP);
 		
 		try{
 			serverURL = new URI(HTTP_PREFIX + serverIP + PATH_TO_REST_SERVICE);
 			
-			httpClient = new DefaultHttpClient();
+			if(httpClient == null){
+			
+				httpClient = new DefaultHttpClient();
+			}
 			
 			Log.d(TAG,"Setting serverURL: " + serverURL);
 			
@@ -49,6 +54,13 @@ public class RestConnector extends Connector {
 		}
 	}
 
+	public static RestConnector getInstance(String serverIP){
+		if(instance == null){
+			return instance = new RestConnector(serverIP);
+		}
+		return instance;
+	}
+	
 	public boolean connected(){
 		return httpClient != null;
 	}
@@ -59,11 +71,12 @@ public class RestConnector extends Connector {
 		return executePostRequest();
 	}
 
-
 	private boolean executePostRequest() throws ClientProtocolException{
 		try{
 		HttpResponse response = httpClient.execute(httpPost);
 		StatusLine statusLine = response.getStatusLine();
+		response.getEntity().consumeContent();
+		
 		return parseStatusLine(statusLine);
 		}catch(IOException ioe){
 			Log.e(TAG, "IO error while sending data", ioe);
@@ -74,7 +87,7 @@ public class RestConnector extends Connector {
 
 	private boolean parseStatusLine(StatusLine statusLine) {
 		switch(statusLine.getStatusCode()){
-		case HttpStatus.SC_OK:
+		case HttpStatus.SC_OK:		
 			return true;
 		}
 		return false;
