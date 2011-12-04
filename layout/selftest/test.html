@@ -97,6 +97,13 @@
         });
       },
       function(callback){
+        console.log("list sources");
+        $.getJSON('/sources', {id: session}, function(data){
+          console.log(data);
+          callback();
+        });
+      },
+      function(callback){
         console.log("list notifications");
         $.getJSON('/notifications/by-source/extern', {id: session}, function(data){
           console.log(data);

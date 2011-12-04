@@ -40,6 +40,14 @@ get '/notifications/by-source/:source' do
   return Heartbeat.all(:conditions => {"user_id" => sessions[id].user.id, "notification.source" => params[:source]}).to_json()
 end
 
+get '/sources' do
+  id = params[:id]
+  return '{"error":"invalid session"}' unless id and sessions[id]
+  return Heartbeat.all(:conditions => {"user_id" => sessions[id].user.id}).map {|hb|
+    hb.notification.source
+  }.uniq.to_json()
+end
+
 #contact version
 get "/user/:username/notifications/by-source/:source" do
   id = params[:id]
@@ -79,7 +87,8 @@ post '/contacts' do
   contact_name = params[:contact_name]
   return '{"error":"invalid arguments"}' unless contact_name
   new_id = User.find_by_name(contact_name).id
-  user.contact_ids << new_id unless user.contact_ids.include? new_id
+  return '{"error":"already added"}' unless user.contact_ids.include? new_id
+  user.contact_ids << new_id
   user.save
   '{"success":"true"}'
 end
