@@ -28,14 +28,9 @@ public class RestConnectorTest extends AndroidTestCase {
 		connectorToTest = new RestConnector("10.1.20.45");
 		normalNotificationToSend = new NormalNotification("Das ist eine test Notification", 5.1, 1.0);
 	}
-	
-	public void testConnectorShouldConnect(){
-		assertTrue(connectorToTest.connect());
-	}
-	
+		
 	public void testConnectorShouldSendData(){
 		try{
-		connectorToTest.connect();
 		assertTrue(connectorToTest.sendData(normalNotificationToSend));
 		}catch(UnsupportedEncodingException uee){
 			Log.e(TAG, "Couldn't send message because the encoding was not supported", uee);
