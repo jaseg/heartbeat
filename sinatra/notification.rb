@@ -1,5 +1,5 @@
 
-require 'coordinates'
+require File.dirname(__FILE__) + '/coordinates.rb'
 
 class Notification
   include  MongoMapper::EmbeddedDocument
