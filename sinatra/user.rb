@@ -11,6 +11,7 @@ class User
   key :positive_keyword, String
   key :negative_keyword, String
   key :contact_ids, Array
+  key :current_state, String
   many :users, :in => :contact_ids
   
   def self.hash(text, salt)
