@@ -89,8 +89,10 @@ post '/contacts' do
   contact_name = params[:contact_name]
   return '{"error":"invalid arguments"}' unless contact_name
   new_id = User.find_by_name(contact_name).id
-  return '{"error":"already added"}' unless user.contact_ids.include? new_id
+  #return '{"error":"already added"}' unless user.contact_ids.include? new_id
   user.contact_ids << new_id
+  #FIXME ugly.
+  user.contact_ids.uniq!
   user.save
   '{"success":"true"}'
 end

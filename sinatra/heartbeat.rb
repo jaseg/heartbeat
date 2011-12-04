@@ -9,7 +9,7 @@ class Heartbeat
 
 	def compute_state(user)
     #FIXME add magyck here!
-    if @notification.content? and @notification.content.include?
+    if @notification.content? and @notification.content.class == String
       if @notification.content.include? user.negative_keyword
         @state = "negative" 
       elsif @notification.content.include? user.positive_keyword
