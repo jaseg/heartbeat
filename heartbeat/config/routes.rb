@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 Heartbeat::Application.routes.draw do
   resources :heartbeats
 
@@ -50,7 +51,7 @@ Heartbeat::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  # root :to => 'welcome#index'
+  root :to => 'heartbeats#index'
 
   # See how all your routes lay out with "rake routes"
 

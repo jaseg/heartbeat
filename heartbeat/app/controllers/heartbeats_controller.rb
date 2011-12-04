@@ -1,6 +1,6 @@
+# -*- encoding : utf-8 -*-
 class HeartbeatsController < ApplicationController
   def index
-    #@heartbeats = Heartbeat.all
-    @heartbeats = ['Auto', 'Motorrad']
+    @heartbeats = ["bla", "blub"]
   end
 end
