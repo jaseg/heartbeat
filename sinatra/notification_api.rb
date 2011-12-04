@@ -32,11 +32,56 @@ post '/notification' do
   "{\"timestamp\":\"#{nf.timestamp}\"}"
 end
 
+#direct version
 get '/notifications/by-source/:source' do
   id = params[:id]
   return '{"error":"invalid session"}' unless id and sessions[id]
   #page = params[:page] ? params[:page] : 1
   return Heartbeat.all(:conditions => {"user_id" => sessions[id].user.id, "notification.source" => params[:source]}).to_json()
+end
+
+#contact version
+get "/user/:username/notifications/by-source/:source" do
+  id = params[:id]
+  return '{"error":"invalid session"}' unless id and sessions[id]
+  contact = sessions[id].user
+  return '{"error":"user not found"}' unless params[:username]
+  user = User.find_by_name(params[:username])
+  #FIXME
+  return '{"error":"user not found"}' unless user and user.contact_ids.includes? contact.id
+  #page = params[:page] ? params[:page] : 1
+  return Heartbeat.all(:conditions => {"user_id" => user.id, "notification.source" => params[:source]}).to_json()
+end
+
+get '/contacts' do
+  id = params[:id]
+  return '{"error":"invalid session"}' unless id and sessions[id]
+  user = sessions[id].user
+  return '{"error": "not authenticated"}' unless user
+  user.contact_ids.map {|contact_id|
+    User.find_by_id(contact_id).username
+  }.to_json
+end
+
+delete '/contacts/:name' do
+  id = params[:id]
+  return '{"error":"invalid session"}' unless id and sessions[id]
+  user = sessions[id].user
+  return '{"error": "not authenticated"}' unless user
+  user.contact_ids.delete User.find_by_name(params[:name]).id
+end
+
+post '/contacts' do
+  id = params[:id]
+  return '{"error":"invalid session"}' unless id and sessions[id]
+  user = sessions[id].user
+  return '{"error":"not authenticated"}' unless user
+  contact_name = params[:contact_name]
+  return '{"error":"invalid arguments"}' unless contact_name
+  new_id = User.find_by_name(contact_name).id
+  user.contact_ids << new_id unless user.contact_ids.include? new_id
+  user.save
+  '{"success":"true"}'
 end
 
 get '/session' do

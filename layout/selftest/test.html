@@ -1,6 +1,6 @@
 <html>
 <head>
-  <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.js"></script>
+  <script type="text/javascript" src="jquery-1.7.js"></script>
   <script type="text/javascript" src="jquery.sha256.js"></script>
   <script type="text/javascript" src="jquery.cookie.js"></script>
   <script type="text/javascript" src="async.js"></script>
@@ -34,6 +34,20 @@
         });
       },
       function(callback){
+        console.log("register");
+        $.post('/register', {id: session, username: "foo", pwhash: $.sha256("42"+salt)}, function(data){
+          console.log(data);
+          callback();
+        });
+      },
+      function(callback){
+        console.log("register");
+        $.post('/register', {id: session, username: "bar", pwhash: $.sha256("23"+salt)}, function(data){
+          console.log(data);
+          callback();
+        });
+      },
+      function(callback){
         console.log("login");
         $.post('/login', {id: session, username: "jaseg", pwhash: $.sha256("foo"+salt)}, function(data){
           console.log(data);
@@ -62,7 +76,28 @@
         });
       },
       function(callback){
-        console.log("list");
+        console.log("adding contact");
+        $.post('/contacts', {id: session, contact_name: "foo"}, function(data){
+          console.log(data);
+          callback();
+        });
+      },
+      function(callback){
+        console.log("adding contact");
+        $.post('/contacts', {id: session, contact_name: "bar"}, function(data){
+          console.log(data);
+          callback();
+        });
+      },
+      function(callback){
+        console.log("list contacts");
+        $.getJSON('/contacts', {id: session}, function(data){
+          console.log(data);
+          callback();
+        });
+      },
+      function(callback){
+        console.log("list notifications");
         $.getJSON('/notifications/by-source/extern', {id: session}, function(data){
           console.log(data);
           callback();
