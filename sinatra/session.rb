@@ -1,5 +1,5 @@
 
-require 'user'
+require File.dirname(__FILE__) + '/user.rb'
 
 class Session
   attr_accessor :user, :created
