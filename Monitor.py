@@ -10,39 +10,40 @@ class Monitor:
         self.life_sign_counter = 0
 
     def init_database(self):
-        self.db_connection = DbConnector()
-        self.db_connection.init_database()
+        self.db_connector = DbConnector()
+        self.db_connector.init_database()
 
-    def check_person_for_status(self):
+    def check_person_for_status(self, heartbeats_missing):
         current_time = datetime.datetime.utcnow()
         last_hour = current_time - datetime.timedelta(hours=1)
 
-        if self.db_connection.heartbeat_within_time(last_hour):
+        if self.db_connector.heartbeat_within_time(last_hour):
             # received: ok, store new status to db
-            self.db_connection.store_status(LifeStatus.OK)
+            self.db_connector.store_status(LifeStatus.OK)
             self.life_sign_counter = 0
             print "ALL OK!"
-
+        else:
             # not received: start incrementing monitor counter
-            if self.life_sign_counter < THRESHOLDS_HEARTBEATS_MISSING:
+            if self.life_sign_counter < heartbeats_missing:
                 self.life_sign_counter += 1
-                self.db_connection.store_status(LifeStatus.WARNING)
+                self.db_connector.store_status(LifeStatus.WARNING)
                 print "MISSING HEARTBEAT"
             else:
                 # Uh-oh! Person missing!
-                self.db_connection.store_status(LifeStatus.MISSING)
+                self.db_connector.store_status(LifeStatus.MISSING)
                 print "UH-OH! PERSON MISSING!"
 
 def main():
+    configuration = Configuration()
     monitor = Monitor()
     monitor.init_database()
 
     while True:
-        print "Checking status"
-        monitor.check_person_for_status()
+        print "."
+        time.sleep(configuration.time_intervals)
 
-        print "Let's wait for 10 seconds"
-        time.sleep(10)
+        monitor.check_person_for_status(configuration.heartbeats_missing)
+
 
 #
 # MAIN
