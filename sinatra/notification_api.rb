@@ -11,6 +11,10 @@ MongoMapper.database = "heartbeat"
 set :public_folder, File.dirname(__FILE__) + '/../layout'
 
 sessions = Hash.new
+sessions["default"] = Session.new
+sessions["default"].user = User.find_by_name("jaseg")
+puts sessions["default"].user
+puts sessions["default"].user.username
 
 get '/' do
   redirect to '/index.html'
@@ -18,6 +22,8 @@ end
 
 post '/notification' do
   id = params[:id]
+  #FIXME testing code
+  id = "default" if id.nil?
   return '{"error":"invalid session"}' unless id and sessions[id]
   user = sessions[id].user
   return '{"error": "not authenticated"}' unless user
@@ -150,6 +156,8 @@ post '/register' do
     user = User.new
     user.username = username
     user.pwhash = pwhash
+    user.positive_keyword = ''
+    user.negative_keyword = ''
     unless User.find_by_name(username)
       user.save
       sessions[id].user = user
